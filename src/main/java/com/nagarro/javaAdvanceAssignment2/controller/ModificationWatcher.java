@@ -23,8 +23,9 @@ public class ModificationWatcher extends Constants implements Runnable {
         File[] files = file.listFiles();
         Session session;
         ArrayList<String> list = new ArrayList<>();
+        assert files != null;
         for (File file : files) {
-            if ((!(lastModifiedAt.containsKey(file.getName()))) ||
+            if (!lastModifiedAt.containsKey(file.getName()) ||
                     (file.lastModified() > lastModifiedAt.get(file.getName()))) {
                 Airline airline = DirectorReader.readFile(file);
                 session = HibernateSF.sf.openSession();
@@ -50,6 +51,7 @@ public class ModificationWatcher extends Constants implements Runnable {
             }
             list.add(file.getName());
         }
+
         Set<String> fc = lastModifiedAt.keySet();
         Set<String> flightName = new HashSet<>(fc);
 
